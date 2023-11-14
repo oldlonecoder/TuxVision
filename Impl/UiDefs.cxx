@@ -4,7 +4,7 @@
 
 #include "TuxVision/UiDefs.h"
 
-namespace Tuxv
+namespace Tux
 {
 
 Colors::Db::Themes Colors::Db::Data =
@@ -77,4 +77,4 @@ Colors::Db::Themes Colors::Db::Data =
 };
 
 }
-// Tuxv
+// Tux

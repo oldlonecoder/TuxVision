@@ -22,7 +22,7 @@
 #include <map>
 
 
-namespace Tuxv
+namespace Tux
 {
 
 
@@ -117,7 +117,7 @@ class TUXV_EXPORT UIDefs
 };
 
 
-}// Tuxv
+}// Tux
 
 
 

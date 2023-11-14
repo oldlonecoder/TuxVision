@@ -16,10 +16,10 @@ SET(FRAMEWORK_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 add_library(
         ${TargetName}
         SHARED
-        include/${TargetName}/Exports.h
         include/TuxVision/Exports.h
-        Impl/UiDefs.cxx
-        include/TuxVision/UiDefs.h             #global framework-wide macros definitions and dll export and import macros
+        include/TuxVision/UiDefs.h              Impl/UIDefs.cxx
+        include/TuxVision/BlocDc.h              Impl/BlocDc.cxx
+        #global framework-wide macros definitions and dll export and import macros
         # ...Will grow...
 )
 
