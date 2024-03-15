@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.13..3.28 FATAL_ERROR)
 ## Project name
 
 project(TuxVision VERSION 0.1.0 LANGUAGES CXX)
@@ -16,11 +16,9 @@ SET(FRAMEWORK_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 add_library(
         ${TargetName}
         SHARED
-        include/TuxVision/Exports.h
-        include/TuxVision/UiDefs.h              Impl/UIDefs.cxx
-        include/TuxVision/BlocDc.h              Impl/BlocDc.cxx
-        #global framework-wide macros definitions and dll export and import macros
-        # ...Will grow...
+        include/TuxVision/Interface.h
+        include/TuxVision/UiDefs.h              cxx/UiDefs.cxx
+        include/TuxVision/BlocDc.h              cxx/BlocDc.cxx
 )
 
 
