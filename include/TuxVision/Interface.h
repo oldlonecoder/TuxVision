@@ -24,9 +24,9 @@
 #   define _SCL_SECURE_NO_WARNINGS
 #   define NOMINMAX
 #   ifdef TUXVISION_EXPORTS
-#       define TUXV_EXPORT __declspec(dllexport)
+#       define TV_API __declspec(dllexport)
 #   else
-#       define TUXV_EXPORT __declspec(dllimport)
+#       define TV_API __declspec(dllimport)
 #   endif
 
 #   include <Windows.H> // Must be included before anything else
@@ -36,7 +36,7 @@
 
 #   define __PRETTY_FUNCTION__ __FUNCSIG__
 #else
-#       define TUXV_EXPORT
+#       define TV_API
 #endif
 
 //---------------------------------------------

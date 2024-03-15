@@ -18,7 +18,7 @@ add_library(
         SHARED
         include/TuxVision/Interface.h
         include/TuxVision/UiDefs.h              cxx/UiDefs.cxx
-        include/TuxVision/BlocDc.h              cxx/BlocDc.cxx
+        include/TuxVision/WinDC.h               cxx/WinDC.cxx
 )
 
 

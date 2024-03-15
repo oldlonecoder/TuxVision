@@ -21,21 +21,22 @@
 #pragma once
 
 #include <TuxVision/UiDefs.h>
-#include <AppBook/Core/Geometry.h>
-#include <AppBook/Core/Object.h>
+#include <AppBook/Util/Geometry.h>
+#include <AppBook/Util/Object.h>
 
+using Util::Object;
 
 namespace Tux
 {
 
-class TUXV_EXPORT BlocDC
+class TV_API WinDC
 {
 
 
-    Core::Object* OwnerParent{nullptr};
-    //Core::Rect    VisibleArea;
-    Core::Rect    BlocGeometry;
-    Core::Point   ScreenCoord;
+    Object* OwnerParent{nullptr};
+    
+    Rect    BlocGeometry;
+    Point   ScreenCoord;
     int           Z{0};
 
 public:
@@ -43,7 +44,7 @@ public:
     using Type = uint32_t*;
 
 
-    struct TUXV_EXPORT Char
+    struct TV_API Pixel
     {
         using Type = uint32_t;
         Type  Mem  = 0;
@@ -66,46 +67,46 @@ public:
         static constexpr int BGShift = 0x10;
         static constexpr int ATShift = 0x18;
 
-        Char() =default;
+        Pixel() =default;
 
-        explicit Char(BlocDC::Char::Type _Ch);
-        explicit Char(BlocDC::Type _C);
-        ~Char() =default;
+        explicit Pixel(WinDC::Pixel::Type _Ch);
+        explicit Pixel(WinDC::Pixel* _C);
+        ~Pixel() =default;
 
-        BlocDC::Char& SetFg(Core::Color::code fg_);
-        BlocDC::Char& SetBg(Core::Color::code bg_);
+        WinDC::Pixel& SetFg(Color::Code fg_);
+        WinDC::Pixel& SetBg(Color::Code bg_);
 
-        [[maybe_unused]] BlocDC::Char& SetAttributes(BlocDC::Char::Type d_);
+        [[maybe_unused]] WinDC::Pixel& SetAttributes(WinDC::Pixel::Type d_);
 
-        [[maybe_unused]] BlocDC::Char& SetColors(Core::Color::Pair&& c_);
+        [[maybe_unused]] WinDC::Pixel& SetColors(Color::Pair&& c_);
 
-        [[maybe_unused]] BlocDC::Char& SetColors(Core::Color::Pair& c_);
+        [[maybe_unused]] WinDC::Pixel& SetColors(Color::Pair& c_);
 
-        BlocDC::Char& operator=(BlocDC::Char::Type d_);
-        BlocDC::Char& operator=(BlocDC::Type d_);
-        BlocDC::Char& operator=(char d_);
+        WinDC::Pixel& operator=(WinDC::Pixel::Type d_);
+        WinDC::Pixel& operator=(WinDC::Type d_);
+        WinDC::Pixel& operator=(char d_);
 
-        [[nodiscard]] Core::Color::code Fg() const;
-        [[nodiscard]] Core::Color::code Bg() const;
+        [[nodiscard]] Color::Code Fg() const;
+        [[nodiscard]] Color::Code Bg() const;
 
-        [[maybe_unused]] [[nodiscard]] Core::Color::Pair Colors() const;
+        [[maybe_unused]] [[nodiscard]] Color::Pair Colors() const;
 
         [[maybe_unused]] Utf::Glyph::Type IconID();
 
         [[maybe_unused]] [[nodiscard]] Utf::AccentFR::Type AccentID() const;
         [[nodiscard]] uint8_t Ascii() const;
 
-        BlocDC::Char::Type& operator*() { return Mem; }
+        WinDC::Pixel::Type& operator*() { return Mem; }
 
         [[maybe_unused]] [[nodiscard]] uint16_t Attributes() const;
 
-        BlocDC::Char& operator << (Utf::Glyph::Type i_);
-        BlocDC::Char& operator << (Utf::AccentFR::Type a_);
-        BlocDC::Char& operator << (char c) { Mem = Mem & (~CharMask) | c; return *this; }
+        WinDC::Pixel& operator << (Utf::Glyph::Type i_);
+        WinDC::Pixel& operator << (Utf::AccentFR::Type a_);
+        WinDC::Pixel& operator << (char c) { Mem = Mem & (~CharMask) | c; return *this; }
 
         [[maybe_unused]] [[nodiscard]] std::string RenderColors() const;
 
-        [[maybe_unused]] BlocDC::Char& ResetAttributes(BlocDC::Char::Type bits_);
+        [[maybe_unused]] WinDC::Pixel& ResetAttributes(WinDC::Pixel::Type bits_);
         explicit operator std::string();
 
         [[nodiscard]] std::string Details() const;
@@ -113,36 +114,37 @@ public:
     };
 
 
-    struct TUXV_EXPORT Painter
+    struct TV_API Painter
     {
-        BlocDC*         Dc{nullptr};
-        Core::Rect      Wh;
-        BlocDC::Char    C;
-        BlocDC::Type    DefAttr{nullptr};
-        BlocDC::Type    Cursor{nullptr};
+        WinDC*          Dc{nullptr};
+        Rect            Wh{};
+        WinDC::Pixel    Pixel{0x20};
+        WinDC::Pixel*   DefAttr{nullptr};
+        WinDC::Pixel*   Cursor{nullptr};
         Justify::Type   JBits{0};
-        Core::Point     Position() const;
+
+        Point     Position() const;
 
     private:
         Painter() = default;
-        Painter(BlocDC* DC, Core::Rect R = {}, BlocDC::Type DefAttr={});
+        Painter(WinDC* DC, Rect R = {}, WinDC::Pixel* DefAttr={});
         Painter(Painter&&) noexcept = default;
         Painter(const Painter&) = default;
     public:
         Painter& operator = (Painter&&) noexcept = default;
         Painter& operator = (const Painter&) = default;
 
-        Painter& operator << (Core::Color::code aColorID);
+        Painter& operator << (Color::Code aColorID);
         Painter& operator << (Utf::Glyph::Type aIconID);
         Painter& operator << (const std::string& aStr);
-        Painter& operator << (const Core::StrAcc& aStr);
-        Painter& operator << (const Core::Point& XY);
+        Painter& operator << (const StrAcc& aStr);
+        Painter& operator << (const Point& XY);
         Painter& operator << (const char* aStr);
         Painter& operator << (Utf::AccentFR::Type aAcc);
 
         Painter& NextChar();
 
-        Painter& GotoXY(Core::Point XY);
+        Painter& GotoXY(Point XY);
         Painter& Home() { return GotoXY({}); }
 
         template<typename T> Painter& operator << (const T& aStr)
@@ -152,53 +154,53 @@ public:
             return (*this) << Out.str();
         }
 
-        Painter& SetColors(Core::Color::Pair pair_);
+        Painter& SetColors(Color::Pair pair_);
 
         Book::Result SetupGeometry();
         Painter& Clear();
         // void Update();
-        Justify::Type& JustifyBits() { return j_bits; }
+        Justify::Type& JustifyBits() { return JBits; }
         Painter& SetBits(Justify::Type aBits);// { Bits = aBits; return *this; }
         Painter& SetHcenter(bool S);// { Bits = S ? (Bits & ~HCenter) | HCenter : (Bits & ~HCenter); return *this; }
         Painter& SetVcenter(bool S);
         Painter& SetCenter(bool S);
         Painter& SetWordWrap(bool S);
-        Painter& SetBg(Core::Color::code aBg);
-        Painter& SetFg(Core::Color::code aFg);
+        Painter& SetBg(Color::Code aBg);
+        Painter& SetFg(Color::Code aFg);
 
     };
 
 
 
-    BlocDC()= default;
-    BlocDC(Core::Object* ParentObject);
-    ~BlocDC();
+    WinDC()= default;
+    WinDC(Object* ParentObject);
+    ~WinDC();
 
-    Core::Dim Dimensions();
+    Dim Dimensions();
 
-    BlocDC::Type MemoryBloc{nullptr};
+    WinDC::Pixel* MemoryBloc{nullptr};
     
-    Char::Type D {0x20};
+    Pixel::Type D {0x20};
 
-    BlocDC::Type Alloc(Core::Dim dim_ = {});
-    BlocDC::Type Realloc(Core::Dim dim_);
+    WinDC::Pixel* Alloc(Dim dim_ = {});
+    WinDC::Pixel*  Realloc(Dim dim_);
     void Dealloc();
-    BlocDC::Type Peek(const Core::Point& pt_);
+    WinDC::Pixel* Peek(const Point& pt_);
 
-    Core::Rect Geometry();
+    Rect Geometry();
 
     int Width() const;
     int Height() const;
-    Core::Point CursorPosition();
-    Book::Result SetPosition(Core::Point pt_);
-    void SetLocation(Core::Point pt_) { ScreenCoord = pt_;}
-    Core::Point Location() { return ScreenCoord;}
+    Point CursorPosition();
+    Book::Result SetPosition(Point pt_);
+    void SetLocation(Point pt_) { ScreenCoord = pt_;}
+    Point Location() { return ScreenCoord;}
     Book::Result Clear(); ///< clear with current attr
-    Book::Result Clear(const Core::Rect& r_); ///< clear sub-region with the current attr;
-    Book::Result Clear(BlocDC::Char::Type a_, const Core::Rect& r_ = {});
+    Book::Result Clear(const Rect& r_); ///< clear sub-region with the current attr;
+    Book::Result Clear(WinDC::Pixel::Type a_, const Rect& r_ = {});
 
 private:
-    friend class BlocDC::Painter;
+    friend class WinDC::Painter;
 };
 
 } // Tux

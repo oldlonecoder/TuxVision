@@ -16,8 +16,8 @@
 
 
 #pragma once
-#include <AppBook/Core/ChAttr.h>
-#include "TuxVision/Exports.h"
+#include <AppBook/Book/AppBook.h>
+#include "TuxVision/Interface.h"
 #include <cstdint>
 #include <map>
 
@@ -26,7 +26,7 @@ namespace Tux
 {
 
 
-using Core::Color;
+
 
 
 /**
@@ -99,7 +99,7 @@ static constexpr Type Success = 0x100;
 namespace Colors
 {
 
-struct TUXV_EXPORT Db
+struct TV_API Db
     {
         using Components = std::map<State::Type,Color::Pair>;
         using Elements  = std::map<std::string_view, Db::Components>;
@@ -111,7 +111,7 @@ struct TUXV_EXPORT Db
 
 
 
-class TUXV_EXPORT UIDefs
+class TV_API UIDefs
 {
 
 };
