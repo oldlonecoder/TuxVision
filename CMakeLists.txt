@@ -39,7 +39,7 @@ target_include_directories(${TargetName} PUBLIC
         $<INSTALL_INTERFACE:include/${TargetName}>
         )
 
-target_link_libraries(${TargetName} ${CMAKE_DL_LIBS} AppBook) # and normally logbook depends on chrtools
+target_link_libraries(${TargetName} ${CMAKE_DL_LIBS} AppBook BookApplicationSkel) # and normally logbook depends on chrtools
 
 
 install(DIRECTORY
